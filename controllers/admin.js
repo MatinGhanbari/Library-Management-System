@@ -6,6 +6,7 @@ const Book = require("../models/book");
 const User = require("../models/user");
 const Activity = require("../models/activity");
 const Issue = require("../models/issue");
+const IssueRequest = require("../models/issueRequests");
 const Comment = require("../models/comment");
 
 // importing utilities
@@ -239,6 +240,30 @@ exports.getUserList = async (req, res, next) => {
       users: users,
       current: page,
       pages: Math.ceil(users_count / PER_PAGE),
+    });
+  } catch (err) {
+    console.log(err);
+    res.redirect("back");
+  }
+};
+
+
+// admin -> get issues list
+exports.getIssuesList = async (req, res, next) => {
+  try {
+    const page = req.params.page || 1;
+
+    const requests = await IssueRequest.find()
+      .sort("-joined")
+      .skip(PER_PAGE * page - PER_PAGE)
+      .limit(PER_PAGE);
+
+    const issues_count = await IssueRequest.find().countDocuments();
+
+    res.render("admin/issueRequests", {
+      issues: requests,
+      current: page,
+      pages: Math.ceil(issues_count / PER_PAGE),
     });
   } catch (err) {
     console.log(err);

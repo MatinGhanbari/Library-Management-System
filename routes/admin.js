@@ -60,6 +60,13 @@ router.get(
   adminController.getUserList
 );
 
+//admin -> issues list
+router.get(
+  "/admin/issues/:page",
+  middleware.isAdmin,
+  adminController.getIssuesList
+);
+
 //admin -> show searched user
 router.post(
   "/admin/users/:page",
