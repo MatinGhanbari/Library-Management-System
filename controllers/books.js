@@ -56,7 +56,10 @@ exports.findBooks = async (req, res, next) => {
     }
 
     const searchObj = {};
-    searchObj[filter] = { $regex: value, $options: 'i' };
+    if(filter!="stock")
+      searchObj[filter] = { $regex: value, $options: 'i' };
+    else
+      searchObj[filter] = value;
 
       // Fetch books from database
     const books = await Book.find(searchObj)

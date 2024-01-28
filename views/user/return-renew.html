@@ -36,6 +36,8 @@
                 <th>Issue date</th>
                 <th>Return date</th>
                 <th>Category</th>
+                <th>Remain days</th>
+                <th></th>
                 <th></th>
               </tr>
             </thead>
@@ -47,6 +49,13 @@
                 <td><%=book.book_info.issueDate.toDateString()%></td>
                 <td><%=book.book_info.returnDate.toDateString()%></td>
                 <td><%=book.book_info.category%></td>
+                <% if(Math.floor((book.book_info.returnDate-Date.now())/1000/60/60/24)<0){ %>
+                    <td style="color: #dc0404"><%=Math.floor((book.book_info.returnDate-Date.now())/1000/60/60/24)%></td>
+                    <td style="color: #dc0404">DelayCost: <%=book.book_info.late_fee * Math.abs(Math.floor((book.book_info.returnDate-Date.now())/1000/60/60/24))%>$</td>
+                <% }else{ %>
+                    <td><%=Math.floor((book.book_info.returnDate-Date.now())/1000/60/60/24)%></td>
+                    <td></td>
+                <% } %>
                 <td>
                   
                   <% if(book.book_info.isRenewed) { %>
@@ -73,4 +82,4 @@
     </div>
 </section>
 
-<% include ('../partials/footer.html') %>
+<%- include ('../partials/footer.html') %>

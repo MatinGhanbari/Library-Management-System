@@ -208,6 +208,7 @@ exports.postIssueBook = async (req, res, next) => {
                 title: book.title,
                 author: book.author,
                 ISBN: book.ISBN,
+                late_fee: book.late_fee,
                 category: book.category,
                 stock: book.stock,
             },

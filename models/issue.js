@@ -10,6 +10,7 @@ const issueSchema = new mongoose.Schema({
     author: String,
     ISBN: String,
     category: String,
+    late_fee: Number,
     stock: Number,
     issueDate: { type: Date, default: Date.now() },
     returnDate: { type: Date, default: Date.now() + 7 * 24 * 60 * 60 * 1000 },

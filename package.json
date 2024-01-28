@@ -15,9 +15,10 @@
     "dev:linux": "export NODE_ENV=dev && nodemon server.js",
     "dev:windows": "SET NODE_ENV=dev && nodemon server.js"
   },
-  "author": "Azad Mamun",
+  "author": "Matin Ghanbari",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^5.3.2",
     "connect-flash": "^0.1.1",
     "connect-mongodb-session": "^3.1.1",
     "dotenv": "^8.2.0",

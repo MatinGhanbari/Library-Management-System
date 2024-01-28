@@ -30,6 +30,7 @@
         <% if(currentUser) { %>
         <p class="p-3">
           <button
+            id="button"
             class="btn btn-primary float-right"
             type="button"
             data-toggle="collapse"
@@ -58,9 +59,9 @@
 
             <% if(currentUser && comment.author.id.equals(currentUser._id)) {%>
 
-            <button id="edit" class="btn btn-primary px-1 py-0">
-              <i class="fa fa-pencil"></i>
-            </button>
+<!--            <button id="edit" class="btn btn-primary px-1 py-0">-->
+<!--              <i class="fa fa-pencil"></i>-->
+<!--            </button>-->
 
             <form class="d-inline" action="/books/details/<%=book._id%>/<%=comment._id%>?_method=DELETE" method="POST">
               <button class="btn btn-sm btn-danger px-1 py-0">
@@ -85,9 +86,9 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-  $("button").on("click", function () {
+  $("#button").on("click", function () {
     $(this).prev().toggleClass("d-none");
     $(this).next().next().toggleClass("d-none");
   });
 </script>
-<% include ('../partials/footer.html') %>
+<%- include ('../partials/footer.html') %>

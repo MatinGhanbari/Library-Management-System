@@ -284,16 +284,16 @@ exports.postIssuesList = async (req, res, next) => {
       ]
     });
 
-    if (requests.length <= 0) {
-      req.flash("error", "issue not found!");
-      return res.redirect("back");
-    } else {
+    // if (requests.length <= 0) {
+    //   req.flash("error", "issue not found!");
+    //   res.redirect("back");
+    // } else {
       res.render("admin/issueRequests", {
         issues: requests,
         current: page,
         pages: Math.ceil(requests.length / PER_PAGE),
       });
-    }
+    // }
   } catch (err) {
     console.log(err);
     res.redirect("back");
@@ -474,6 +474,7 @@ exports.approveIssueRequest = async (req, res, next) => {
         id: book._id,
         title: book.title,
         author: book.author,
+        late_fee: book.late_fee,
         ISBN: book.ISBN,
         category: book.category,
         stock: book.stock,
