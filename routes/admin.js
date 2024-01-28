@@ -117,7 +117,7 @@ router.post(
 );
 
 // admin -> delete a issue request
-router.post(
+router.get(
   "/admin/issues/delete/:issue_id",
   middleware.isAdmin,
   adminController.deleteIssueRequest
