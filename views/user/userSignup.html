@@ -13,7 +13,7 @@
             <h4>User Sign Up</h4>
           </div>
           <div class="card-block">
-            <form class="p-3" action="/auth/user-signUp" method="POST">
+            <form class="p-3" action="/auth/user-signUp" method="POST" enctype="multipart/form-data">
               <div class="form-group">
                 <label class="form-control-label">First Name</label>
                 <input type="text" name="firstName" placeholder="firstName" class="form-control" required />
@@ -53,6 +53,22 @@
                 <input type="text" name="address" placeholder="Address" class="form-control" required />
               </div>
 
+<!--              <div class="form-group" hidden="hidden">-->
+<!--                <input type="text" name="imageBase64" id="imageBase64" placeholder="Address" class="form-control" required />-->
+<!--              </div>-->
+
+              <div class="form-group">
+                <label class="form-control-label">Profile Picture</label>
+                <input type="file" accept="image/*" name="image" onchange="displayImage(event)" placeholder="Profile Picture" class="form-control" required />
+              </div>
+
+              <div id="profile-preview-div" style="display: none">
+                <label>Profile Picture Preview:</label><br>
+                <img id="profile-picture-preview" src="#" alt="Profile Picture Preview"
+                     style="max-width: 200px; max-height: 200px;"/>
+              </div>
+              <br>
+
               <button type="submit" class="btn btn-primary btn-block">Submit</button>
             </form>
           </div>
@@ -61,5 +77,26 @@
     </div>
   </div>
 </section>
+
+<script>
+  function displayImage(event) {
+    var input = event.target;
+    var reader = new FileReader();
+
+    reader.onload = function () {
+      var imgElement = document.getElementById('profile-picture-preview');
+      var div_preview = document.getElementById('profile-preview-div');
+      div_preview.style.display = "block";
+      imgElement.src = reader.result;
+
+      // const extension = input.files[0].toLowerCase();
+      // const mimeType = `image/${extension.substr(1)}`;
+      // var imageBase64 = document.getElementById('imageBase64');
+      // imageBase64.value = `data:${mimeType};base64,${reader.result}`;
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+</script>
 
 <% include ('../partials/footer.html') %>

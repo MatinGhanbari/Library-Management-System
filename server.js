@@ -17,7 +17,7 @@ const userRoutes = require("./routes/users");
 const adminRoutes = require("./routes/admin");
 const bookRoutes = require("./routes/books");
 const authRoutes = require("./routes/auth");
-
+const bodyParser = require('body-parser');
 
 // uncomment below line for first time to seed database;
 // const Seed = require("./seed");
@@ -26,6 +26,8 @@ const authRoutes = require("./routes/auth");
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
 // app config
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.engine(".html", ejs.renderFile);
 app.set("view engine", "html");
 app.set("views", path.join(__dirname, "views"));

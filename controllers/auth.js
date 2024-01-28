@@ -5,6 +5,10 @@ if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
 // importing models
 const User = require("../models/user");
+const uid = require("uid");
+const fs = require("fs");
+const deleteImage = require("../utils/delete_image");
+const sharp = require("sharp");
 
 exports.getLandingPage = async (_req, res) => {
   return res.render("landing.html");
@@ -76,7 +80,25 @@ exports.postUserSignUp = async (req, res, next) => {
       email: req.body.email,
       gender: req.body.gender,
       address: req.body.address,
+      // image: req.body.profile_pic_base64,
     });
+
+    imageUrl = `${uid()}__${req.file.originalname}`;
+    let filename = `images/${imageUrl}`;
+    // let previousImagePath = `images/${newUser.image}`;
+    //
+    // const imageExist = fs.existsSync(previousImagePath);
+    // if (imageExist) {
+    //   deleteImage(previousImagePath);
+    // }
+    await sharp(req.file.path).rotate().resize(500, 500).toFile(filename);
+
+    fs.unlink(req.file.path, (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+    newUser.image = imageUrl;
 
     await User.register(newUser, req.body.password);
     await passport.authenticate("local")(req, res, () => {

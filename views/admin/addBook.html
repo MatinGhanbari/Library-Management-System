@@ -30,8 +30,8 @@
 
                         <div class="form-group">
                             <label class="form-control-label">Book Cover</label>
-                            <input type="file" accept="image/*" name="book[cover]" placeholder="Book Cover"
-                                   class="form-control" onchange="displayImage(event)" required>
+                            <input type="file" accept="image/*" placeholder="Book Cover" class="form-control" onchange="displayImage(event)" required>
+                            <input type="text" name="book[cover]" id="bookCover" class="form-control" hidden="hidden">
                         </div>
 
                         <div id="book-preview-div" style="display: none">
@@ -88,6 +88,11 @@
             var div_preview = document.getElementById('book-preview-div');
             div_preview.style.display = "block";
             imgElement.src = reader.result;
+
+            const extension = input.files[0].toLowerCase();
+            const mimeType = `image/${extension.substr(1)}`;
+            var bookCover = document.getElementById('bookCover');
+            bookCover.value = `data:${mimeType};base64,${reader.result}`;
         };
 
         reader.readAsDataURL(input.files[0]);
