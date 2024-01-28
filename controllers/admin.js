@@ -271,6 +271,35 @@ exports.getIssuesList = async (req, res, next) => {
   }
 };
 
+// admin -> post issues list
+exports.postIssuesList = async (req, res, next) => {
+  try {
+    const page = req.params.page || 1;
+    const search_value = req.body.searchIssueRequest;
+
+    const requests = await IssueRequest.find({
+      $or: [
+        { 'book_info.title': { $regex: search_value, $options: 'i' } },
+        { 'user_id.username': { $regex: search_value, $options: 'i' } }
+      ]
+    });
+
+    if (requests.length <= 0) {
+      req.flash("error", "issue not found!");
+      return res.redirect("back");
+    } else {
+      res.render("admin/issueRequests", {
+        issues: requests,
+        current: page,
+        pages: Math.ceil(requests.length / PER_PAGE),
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.redirect("back");
+  }
+};
+
 // admin -> show searched user
 exports.postShowSearchedUser = async (req, res, next) => {
   try {

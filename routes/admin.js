@@ -66,6 +66,12 @@ router.get(
   middleware.isAdmin,
   adminController.getIssuesList
 );
+//admin -> issues list
+router.post(
+  "/admin/issues/:page",
+  middleware.isAdmin,
+  adminController.postIssuesList
+);
 
 //admin -> show searched user
 router.post(

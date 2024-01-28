@@ -40,33 +40,36 @@ exports.getBooks = async (req, res, next) => {
 };
 
 exports.findBooks = async (req, res, next) => {
-  var page = req.params.page || 1;
-  const filter = req.body.filter.toLowerCase();
-  const value = req.body.searchName;
-
-  // show flash message if empty search field is sent to backend
-  if (value == "") {
-    req.flash(
-      "error",
-      "Search field is empty. Please fill the search field in order to get a result"
-    );
-    return res.redirect("back");
-  }
-
-  const searchObj = {};
-  searchObj[filter] = value;
-
   try {
-    // Fetch books from database
+
+    var page = req.params.page || 1;
+    const filter = req.body.filter.toLowerCase();
+    const value = req.body.searchName.trim();
+
+    // show flash message if empty search field is sent to backend
+    if (value == "") {
+      req.flash(
+        "error",
+        "Search field is empty. Please fill the search field in order to get a result"
+      );
+      return res.redirect("back");
+    }
+
+    const searchObj = {};
+    searchObj[filter] = { $regex: value, $options: 'i' };
+
+      // Fetch books from database
     const books = await Book.find(searchObj)
       .skip(PER_PAGE * page - PER_PAGE)
       .limit(PER_PAGE);
 
     // Get the count of total available book of given filter
     const count = await Book.find(searchObj).countDocuments();
+    const issues = await IssueRequest.find({});
 
     res.render("books", {
       books: books,
+      issues: issues,
       current: page,
       pages: Math.ceil(count / PER_PAGE),
       filter: filter,
