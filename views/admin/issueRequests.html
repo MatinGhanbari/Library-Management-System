@@ -56,16 +56,39 @@
           <table class="table table-striped">
             <thead class="thead-inverse">
               <tr>
-                <th>User name</th>
-                <th>Book</th>
-                <th></th>
+                <th>User</th>
+                <th>Book Title</th>
+                <th>Book Author</th>
+                <th>Book ISBN</th>
+                <th>Stock</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <% issues.forEach(issueReq=> { %>
+
               <tr>
                 <td><%=issueReq.user_id.username%></td>
                 <td><%=issueReq.book_info.title%></td>
+                <td><%=issueReq.book_info.author%></td>
+                <td><%=issueReq.book_info.ISBN%></td>
+                <td><%=issueReq.book_info.stock%></td>
+                <td style="display: flex">
+                  <!--todo-->
+                  <form action="/admin/issues/approve/<%=issueReq._id%>" method="post" style="margin-right: -2rem;">
+                    <div class="form-group" style="display: flex">
+                      <input type="number" name="approve_days" placeholder="Approve Days" class="form-control"  required style="width: 65%"/>
+                      <button style="margin-left: 0.5rem" type="submit" title="Approve Request" class="btn btn-sm btn-success">
+                        <i class="fa fa-check" style="color: white"></i>
+                      </button>
+                    </div>
+                  </form>
+                  <div class="form-group" style="display: flex">
+                  <a href="/admin/issues/delete/<%=issueReq._id%>" title="Delete Request" class="btn btn-sm btn-danger">
+                    <i class="fa fa-trash"></i>
+                  </a>
+                  </div>
+                </td>
               </tr>
               <% }); %>
             </tbody>

@@ -254,7 +254,7 @@ exports.getIssuesList = async (req, res, next) => {
     const page = req.params.page || 1;
 
     const requests = await IssueRequest.find()
-      .sort("-joined")
+      // .sort("-joined")
       .skip(PER_PAGE * page - PER_PAGE)
       .limit(PER_PAGE);
 
@@ -405,6 +405,86 @@ exports.getDeleteUser = async (req, res, next) => {
     await Activity.deleteMany({ "user_id.id": user_id });
 
     res.redirect("/admin/users/1");
+  } catch (err) {
+    console.log(err);
+    res.redirect("back");
+  }
+};
+
+// admin -> delete a issue request
+exports.deleteIssueRequest = async (req, res, next) => {
+  try {
+    const issue_id = req.params.issue_id;
+    const issue_request = await IssueRequest.findById(issue_id);
+    await issue_request.remove();
+
+    res.redirect("/admin/issues/1");
+  } catch (err) {
+    console.log(err);
+    res.redirect("back");
+  }
+};
+
+
+// admin -> approve a issue request
+exports.approveIssueRequest = async (req, res, next) => {
+  try {
+    const issue_id = req.params.issue_id;
+    var approve_days = req.body.approve_days;
+    if(!approve_days || approve_days==="" || approve_days==null){
+        approve_days = 7;
+    }
+    const issue_request = await IssueRequest.findById(issue_id);
+
+    const book = await Book.findById(issue_request.book_info.id);
+    const user = await User.findById(issue_request.user_id.id);
+
+    book.stock -= 1;
+    const issue = new Issue({
+      book_info: {
+        id: book._id,
+        title: book.title,
+        author: book.author,
+        ISBN: book.ISBN,
+        category: book.category,
+        stock: book.stock,
+        returnDate: Date.now() + ((+approve_days) * 24 * 60 * 60 * 1000),
+      },
+      user_id: {
+        id: user._id,
+        username: user.username,
+      },
+    });
+
+    // putting issue record on individual user document
+    user.bookIssueInfo.push(book._id);
+
+    // logging the activity
+    const activity = new Activity({
+      info: {
+        id: book._id,
+        title: book.title,
+      },
+      category: "Issue",
+      time: {
+        id: issue._id,
+        issueDate: issue.book_info.issueDate,
+        returnDate: issue.book_info.returnDate,
+      },
+      user_id: {
+        id: user._id,
+        username: user.username,
+      },
+    });
+
+    // await ensure to synchronously save all database alteration
+    await issue.save();
+    await user.save();
+    await book.save();
+    await activity.save();
+    await issue_request.remove();
+
+    res.redirect("/admin/issues/1");
   } catch (err) {
     console.log(err);
     res.redirect("back");

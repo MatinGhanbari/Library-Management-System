@@ -217,50 +217,9 @@ exports.postIssueBook = async (req, res, next) => {
             },
         });
 
-        // book.stock -= 1;
-        // const issue = new Issue({
-        //   book_info: {
-        //     id: book._id,
-        //     title: book.title,
-        //     author: book.author,
-        //     ISBN: book.ISBN,
-        //     category: book.category,
-        //     stock: book.stock,
-        //   },
-        //   user_id: {
-        //     id: user._id,
-        //     username: user.username,
-        //   },
-        // });
-        //
-        // // putting issue record on individual user document
-        // user.bookIssueInfo.push(book._id);
-        //
-        // // logging the activity
-        // const activity = new Activity({
-        //   info: {
-        //     id: book._id,
-        //     title: book.title,
-        //   },
-        //   category: "Issue",
-        //   time: {
-        //     id: issue._id,
-        //     issueDate: issue.book_info.issueDate,
-        //     returnDate: issue.book_info.returnDate,
-        //   },
-        //   user_id: {
-        //     id: user._id,
-        //     username: user.username,
-        //   },
-        // });
-        //
-        // // await ensure to synchronously save all database alteration
-        // await issue.save();
-        // await user.save();
-        // await book.save();
-        // await activity.save();
         await issueRequest.save();
 
+        req.flash("success", "Issue Request sent!");
         res.redirect("/books/all/all/1");
     } catch (err) {
         console.log(err);

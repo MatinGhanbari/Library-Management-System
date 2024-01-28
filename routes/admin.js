@@ -109,6 +109,20 @@ router.get(
   adminController.getDeleteUser
 );
 
+// admin -> approve a issue request
+router.post(
+  "/admin/issues/approve/:issue_id",
+  middleware.isAdmin,
+  adminController.approveIssueRequest
+);
+
+// admin -> delete a issue request
+router.post(
+  "/admin/issues/delete/:issue_id",
+  middleware.isAdmin,
+  adminController.deleteIssueRequest
+);
+
 //admin -> add new book
 router.get(
   "/admin/books/add",
