@@ -62,10 +62,13 @@ exports.getUserLoginPage = (req, res, next) => {
 };
 
 exports.getUserLogout = async (req, res, next) => {
-  console.log("e");
   await req.session.destroy();
-  req.logout();
-  res.redirect("/");
+  req.logout(err => {
+    if (err) {
+      // throw new Error('Error occurred during logout');
+    }
+    res.redirect("/");
+  });
 };
 
 exports.getUserSignUp = (req, res, next) => {
