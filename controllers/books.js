@@ -101,3 +101,64 @@ exports.getBookDetails = async (req, res, next) => {
     return res.redirect("back");
   }
 };
+
+
+exports.autocompleteSearch = async (req, res) => {
+    try {
+        const { filter, q: searchTerm } = req.query;
+        let searchQuery = {};
+
+        // Check if the search term is provided
+        if (searchTerm) {
+            // Handle different filters
+            switch (filter) {
+                case 'Title':
+                    searchQuery = { title: { $regex: searchTerm, $options: 'i' } };
+                    break;
+                case 'Author':
+                    searchQuery = { author: { $regex: searchTerm, $options: 'i' } };
+                    break;
+                case 'Category':
+                    searchQuery = { category: { $regex: searchTerm, $options: 'i' } };
+                    break;
+                case 'ISBN':
+                    searchQuery = { ISBN: { $regex: searchTerm, $options: 'i' } };
+                    break;
+                case 'Stock':
+                    // Assuming stock is a numeric field, you may want to handle it differently
+                    // For example, you might want to find books with stock greater than a certain number
+                    // or convert searchTerm to a number and compare
+                    break;
+                default:
+                    // Default case if no filter is specified or the filter is not recognized
+                    searchQuery = { title: { $regex: searchTerm, $options: 'i' } };
+            }
+        }
+
+        const results = await Book.find(searchQuery).limit(10); // Limit the number of results to 10
+
+        // Prepare the response based on the filter
+        let response = results.map(book => {
+            switch (filter) {
+                case 'Title':
+                    return book.title;
+                case 'Author':
+                    return book.author;
+                case 'Category':
+                    return book.category;
+                case 'ISBN':
+                    return book.ISBN;
+                case 'Stock':
+                    // Assuming you want to return the stock count
+                    return book.stock.toString();
+                default:
+                    return book.title;
+            }
+        });
+
+        res.json(response.reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]));
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server error');
+    }
+};

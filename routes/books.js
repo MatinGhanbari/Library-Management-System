@@ -13,4 +13,7 @@ router.post("/books/:filter/:value/:page", bookController.findBooks);
 // Fetch individual book details
 router.get("/books/details/:book_id", bookController.getBookDetails);
 
+router.get('/autocomplete', bookController.autocompleteSearch);
+
+
 module.exports = router;

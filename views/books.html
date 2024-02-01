@@ -1,4 +1,72 @@
 <%- include ('./partials/header.html') %>
+<style>
+  .suggestions-box {
+    position: absolute;
+    border: 1px solid #ddd;
+    background-color: white;
+    border-radius: 4px;
+    padding: 10px;
+    display: none; /* Hide initially */
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%; /* Adjust width as needed */
+    z-index: 1050;
+
+}
+
+.suggestions-box div {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.suggestions-box div:hover {
+    background-color: #f0f0f0;
+}
+
+</style>
+<script>
+function debounce(func, timeout = 300) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+}
+
+function fetchSuggestions() {
+    const searchTerm = document.getElementById('searchInput').value;
+    const filter = document.querySelector('select[name="filter"]').value; // Get the selected filter
+
+    if (searchTerm.length < 3) {
+        document.getElementById('suggestions').style.display = 'none';
+        return;
+    }
+
+    fetch(`/autocomplete?q=${encodeURIComponent(searchTerm)}&filter=${encodeURIComponent(filter)}`)
+        .then(response => response.json())
+        .then(suggestions => {
+            let suggestionsHTML = suggestions.map(suggestion => 
+                `<div onclick="selectSuggestion('${suggestion}')">${suggestion}</div>`
+            ).join('');
+            document.getElementById('suggestions').innerHTML = suggestionsHTML;
+            document.getElementById('suggestions').style.display = 'block';
+        });
+}
+
+
+function selectSuggestion(title) {
+    document.getElementById('searchInput').value = title;
+    document.getElementById('suggestions').style.display = 'none';
+}
+
+document.getElementById('searchInput').addEventListener('input', debounce(fetchSuggestions, 500));
+document.addEventListener('click', function(event) {
+  var isClickInsideElement = document.getElementById('searchInput').contains(event.target) || document.getElementById('suggestions').contains(event.target);
+  if (!isClickInsideElement) {
+    document.getElementById('suggestions').style.display = 'none';
+  }
+});
+</script>
 </head>
 <body>
   <!--NAVIGATION BAR-->
@@ -74,7 +142,7 @@
       <form action="/books/all/all/1" method="POST">
         <div class="row">
           <div class="col-md-5 p-1">
-            <select name="filter" class="form-control">
+            <select name="filter" class="form-control form-select">
               <option selected disabled>Select Filter...</option>
               <option name="title">Title</option>
               <option name="author">Author</option>
@@ -85,8 +153,10 @@
           </div>
 
           <div class="col-md-5 p-1">
-            <input name="searchName" type="text" class="form-control" placeholder="Search Books">
+            <input name="searchName" style="position: relative;" id="searchInput" type="text" class="form-control" placeholder="Search Books" oninput="fetchSuggestions()">
+            <div id="suggestions" class="suggestions-box" ></div>
           </div>
+
 
           <div class="col-md-2 p-1">
             <input type="submit" class="btn btn-outline-primary btn-block" value="Search">
@@ -160,44 +230,46 @@
             </div>
             <% } %>
         </div>
-        <% if (pages> 0) { %>
-          <nav class="ml-3 mb-2">
-            <ul class="pagination offset-md-3">
-
-              <% if (current==1) { %>
-                <li class="page-item disabled"><a class="page-link">First</a></li>
-                <% } else { %>
-                  <li class="page-item"><a href="/books/<%=filter%>/<%=value%>/1" class="page-link">First</a></li>
+        <% if (pages > 0) { %>
+          <nav class="mt-4  mb-2">
+            <div class="row">
+              <div class="col d-flex justify-content-center">
+                <ul class="pagination">
+        
+                  <% if (current == 1) { %>
+                    <li class="page-item disabled"><a class="page-link">First</a></li>
+                  <% } else { %>
+                    <li class="page-item"><a href="/books/<%=filter%>/<%=value%>/1" class="page-link">First</a></li>
                   <% } %>
-
-                    <% var i=(Number(current)> 5 ? Number(current) - 4 : 1) %>
-                      <% if (i !==1) { %>
-                        <li class="page-item disabled"><a class="page-link">...</a></li>
-                        <% } %>
-                          <% for (; i <=(Number(current) + 4) && i <=pages; i++) { %>
-                            <% if (i==current) { %>
-                              <li class="page-item active"><a class="page-link">
-                                  <%= i %>
-                                </a></li>
-                              <% } else { %>
-                                <li class="page-item"><a class="page-link"
-                                    href="/books/<%=filter%>/<%=value%>/<%= i %>">
-                                    <%= i %>
-                                  </a></li>
-                                <% } %>
-                                  <% if (i==Number(current) + 4 && i < pages) { %>
-                                    <li class="page-item disabled"><a class="page-link">...</a></li>
-                                    <% } %>
-                                      <% } %>
-                                        <% if (current==pages) { %>
-                                          <li class="page-item disabled"><a class="page-link">Last</a></li>
-                                          <% } else { %>
-                                            <li class="page-item"><a href="/books/<%=filter%>/<%=value%>/<%= pages %>"
-                                                class="page-link">Last</a></li>
-                                            <% } %>
-            </ul>
+        
+                  <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                  <% if (i !== 1) { %>
+                    <li class="page-item disabled"><a class="page-link">...</a></li>
+                  <% } %>
+        
+                  <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                    <% if (i == current) { %>
+                      <li class="page-item active"><a class="page-link"><%= i %></a></li>
+                    <% } else { %>
+                      <li class="page-item"><a class="page-link" href="/books/<%=filter%>/<%=value%>/<%= i %>"><%= i %></a></li>
+                    <% } %>
+        
+                    <% if (i == Number(current) + 4 && i < pages) { %>
+                      <li class="page-item disabled"><a class="page-link">...</a></li>
+                    <% } %>
+                  <% } %>
+        
+                  <% if (current == pages) { %>
+                    <li class="page-item disabled"><a class="page-link">Last</a></li>
+                  <% } else { %>
+                    <li class="page-item"><a href="/books/<%=filter%>/<%=value%>/<%= pages %>" class="page-link">Last</a></li>
+                  <% } %>
+        
+                </ul>
+              </div>
+            </div>
           </nav>
-          <% } %>
+        <% } %>
       </div>
     </section>
 
