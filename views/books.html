@@ -35,7 +35,7 @@ function debounce(func, timeout = 300) {
 
 function fetchSuggestions() {
     const searchTerm = document.getElementById('searchInput').value;
-    const filter = document.querySelector('select[name="filter"]').value; // Get the selected filter
+    const filter = document.querySelector('select[name="filter"]').value;
 
     if (searchTerm.length < 3) {
         document.getElementById('suggestions').style.display = 'none';
@@ -45,13 +45,22 @@ function fetchSuggestions() {
     fetch(`/autocomplete?q=${encodeURIComponent(searchTerm)}&filter=${encodeURIComponent(filter)}`)
         .then(response => response.json())
         .then(suggestions => {
-            let suggestionsHTML = suggestions.map(suggestion => 
-                `<div onclick="selectSuggestion('${suggestion}')">${suggestion}</div>`
-            ).join('');
+            let suggestionsHTML = suggestions.map(suggestion => {
+                const indexOfTerm = suggestion.data.toLowerCase().indexOf(searchTerm.toLowerCase());
+                const start = suggestion.data.substr(0, indexOfTerm + searchTerm.length);
+                const end = suggestion.data.substr(indexOfTerm + searchTerm.length);
+                if (filter === 'Title') {
+                    // Redirect to the book details page when the title is clicked
+                    return `<div onclick="window.location.href='/books/details/${suggestion._id}'">${start}<strong>${end}</strong></div>`;
+                } else {
+                    return `<div onclick="selectSuggestion('${suggestion.data}')">${start}<strong>${end}</strong></div>`;
+                }
+            }).join('');
             document.getElementById('suggestions').innerHTML = suggestionsHTML;
             document.getElementById('suggestions').style.display = 'block';
         });
 }
+
 
 
 function selectSuggestion(title) {

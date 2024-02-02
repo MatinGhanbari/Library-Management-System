@@ -41,7 +41,6 @@ exports.getBooks = async (req, res, next) => {
 
 exports.findBooks = async (req, res, next) => {
   try {
-
     var page = req.params.page || 1;
     const filter = req.body.filter.toLowerCase();
     const value = req.body.searchName.trim();
@@ -56,12 +55,10 @@ exports.findBooks = async (req, res, next) => {
     }
 
     const searchObj = {};
-    if(filter!="stock")
-      searchObj[filter] = { $regex: value, $options: 'i' };
-    else
-      searchObj[filter] = value;
+    if (filter != "stock") searchObj[filter] = { $regex: value, $options: "i" };
+    else searchObj[filter] = value;
 
-      // Fetch books from database
+    // Fetch books from database
     const books = await Book.find(searchObj)
       .skip(PER_PAGE * page - PER_PAGE)
       .limit(PER_PAGE);
@@ -102,63 +99,68 @@ exports.getBookDetails = async (req, res, next) => {
   }
 };
 
-
 exports.autocompleteSearch = async (req, res) => {
-    try {
-        const { filter, q: searchTerm } = req.query;
-        let searchQuery = {};
+  try {
+    const { filter, q: searchTerm } = req.query;
+    let searchQuery = {};
 
-        // Check if the search term is provided
-        if (searchTerm) {
-            // Handle different filters
-            switch (filter) {
-                case 'Title':
-                    searchQuery = { title: { $regex: searchTerm, $options: 'i' } };
-                    break;
-                case 'Author':
-                    searchQuery = { author: { $regex: searchTerm, $options: 'i' } };
-                    break;
-                case 'Category':
-                    searchQuery = { category: { $regex: searchTerm, $options: 'i' } };
-                    break;
-                case 'ISBN':
-                    searchQuery = { ISBN: { $regex: searchTerm, $options: 'i' } };
-                    break;
-                case 'Stock':
-                    // Assuming stock is a numeric field, you may want to handle it differently
-                    // For example, you might want to find books with stock greater than a certain number
-                    // or convert searchTerm to a number and compare
-                    break;
-                default:
-                    // Default case if no filter is specified or the filter is not recognized
-                    searchQuery = { title: { $regex: searchTerm, $options: 'i' } };
-            }
-        }
-
-        const results = await Book.find(searchQuery).limit(10); // Limit the number of results to 10
-
-        // Prepare the response based on the filter
-        let response = results.map(book => {
-            switch (filter) {
-                case 'Title':
-                    return book.title;
-                case 'Author':
-                    return book.author;
-                case 'Category':
-                    return book.category;
-                case 'ISBN':
-                    return book.ISBN;
-                case 'Stock':
-                    // Assuming you want to return the stock count
-                    return book.stock.toString();
-                default:
-                    return book.title;
-            }
-        });
-
-        res.json(response.reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]));
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Server error');
+    // Check if the search term is provided
+    if (searchTerm) {
+      // Handle different filters
+      switch (filter) {
+        case "Title":
+          searchQuery = { title: { $regex: searchTerm, $options: "i" } };
+          break;
+        case "Author":
+          searchQuery = { author: { $regex: searchTerm, $options: "i" } };
+          break;
+        case "Category":
+          searchQuery = { category: { $regex: searchTerm, $options: "i" } };
+          break;
+        case "ISBN":
+          searchQuery = { ISBN: { $regex: searchTerm, $options: "i" } };
+          break;
+        case "Stock":
+          // Assuming stock is a numeric field, you may want to handle it differently
+          // For example, you might want to find books with stock greater than a certain number
+          // or convert searchTerm to a number and compare
+          break;
+        default:
+          // Default case if no filter is specified or the filter is not recognized
+          searchQuery = { title: { $regex: searchTerm, $options: "i" } };
+      }
     }
+
+    const results = await Book.find(searchQuery).limit(10); // Limit the number of results to 10
+
+    // Prepare the response based on the filter
+    let response = results.map((book) => {
+      switch (filter) {
+        case "Title":
+          return {
+            _id: book._id,
+            data: book.title,
+          };
+        case "Author":
+          return { data: book.author };
+        case "Category":
+          return { data: book.category };
+        case "ISBN":
+          return { data: book.ISBN };
+        case "Stock":
+          // Assuming you want to return the stock count
+          return book.stock.toString();
+        default:
+          return book.title;
+      }
+    });
+    const uniqueResponse = response.filter(
+      (value, index, self) =>
+        index === self.findIndex((t) => t.data === value.data && t._id === value._id)
+    );
+    res.json(uniqueResponse);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
 };
