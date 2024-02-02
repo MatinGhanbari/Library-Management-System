@@ -1,106 +1,96 @@
 <%- include ('../partials/header.html') %>
+<script src="https://cdn.tailwindcss.com"></script>
 
 </head>
+<body style="background: url('/images/AdminLogin-bg.png') no-repeat center center; background-size: cover; background-attachment: fixed;background-position: center;">
+    <!-- ALERTS -->
+    <%- include ('../partials/alerts.html') %>
 
-<body>
+    <section id="userSignUpForm" class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="max-w-md mx-auto bg-white bg-opacity-60 rounded-lg shadow-md overflow-hidden md:max-w-lg">
+                <div class="md:flex">
+                    <div class="w-full p-4">
+                        <div class="text-center mb-4">
+                            <h4 class="font-bold text-lg text-gray-700">User Sign Up</h4>
+                        </div>
+                        <form class="p-3" action="/auth/user-signup" method="POST" enctype="multipart/form-data">
+                            <!-- Firstname Input -->
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="firstname">Firstname</label>
+                                <input class="flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" id="firstname" name="firstName" type="text" placeholder="Your Firstname" required>
+                            </div>
 
-<section id="usersignUpForm">
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <div class="card">
-          <div class="card-header text-center">
-            <h4>User Sign Up</h4>
-          </div>
-          <div class="card-block">
-            <form class="p-3" action="/auth/user-signUp" method="POST" enctype="multipart/form-data">
-              <div class="form-group">
-                <label class="form-control-label">First Name</label>
-                <input type="text" name="firstName" placeholder="firstName" class="form-control" required />
-              </div>
+                            <!-- Lastname Input -->
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="lastname">Lastname</label>
+                                <input class="flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" id="lastname" name="lastName" type="text" placeholder="Your Lastname" required>
+                            </div>
 
-              <div class="form-group">
-                <label class="form-control-label">Last Name</label>
-                <input type="text" name="lastName" placeholder="lastName" class="form-control" required />
-              </div>
+                                <!-- Name Input -->
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Username</label>
+                                <input class="flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" id="name" name="username" type="text" placeholder="Your Username" required>
+                            </div>
+                              
+                            <!-- Email Input -->
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
+                                <input class="flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" id="email" name="email" type="email" placeholder="Your Email" required>
+                            </div>
 
-              <div class="form-group">
-                <label class="form-control-label">Pick a username</label>
-                <input type="text" name="username" placeholder="Username" class="form-control" required />
-              </div>
+                            <!-- Password Input -->
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
+                                <input class="flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" id="password" name="password" type="password" placeholder="******************" required>
+                            </div>
 
-              <div class="form-group">
-                <label class="form-control-label">Email</label>
-                <input type="email" name="email" placeholder="Email" class="form-control" required />
-              </div>
+                            <!-- Gender Select -->
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">Gender</label>
+                                <select class="form-control" id="gender" name="gender" required>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                            </div>
 
-              <div class="form-group">
-                <label class="form-control-label">Password</label>
-                <input type="password" name="password" placeholder="Password" class="form-control" required />
-              </div>
+                            <!-- Address Input -->
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="address">Address</label>
+                                <input class="form-control" id="address" name="address" type="text" placeholder="Your Address" required>
+                            </div>
 
-              <div class="form-group">
-                <label class="form-control-label">Gender</label>
-                <select name="gender" class="form-control">
-                  <option name="male">Male</option>
-                  <option name="female">Female</option>
-                  <option name="others">Others</option>
-                </select>
-              </div>
+                            <!-- Profile Picture Input -->
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="profilePicture">Profile Picture</label>
+                                <input class="form-control" id="profilePicture" name="image" type="file" accept="image/*" onchange="previewProfilePicture(event)">
+                                <img id="profilePicturePreview" src="#" alt="Profile Picture Preview" style="max-width: 100%; display: none;">
+                            </div>
 
-              <div class="form-group">
-                <label class="form-control-label">Address</label>
-                <input type="text" name="address" placeholder="Address" class="form-control" required />
-              </div>
-
-<!--              <div class="form-group" hidden="hidden">-->
-<!--                <input type="text" name="imageBase64" id="imageBase64" placeholder="Address" class="form-control" required />-->
-<!--              </div>-->
-
-              <div class="form-group">
-                <label class="form-control-label">Profile Picture</label>
-                <input type="file" accept="image/*" name="image" onchange="displayImage(event)" placeholder="Profile Picture" class="form-control" required />
-              </div>
-
-              <div id="profile-preview-div" style="display: none">
-                <label>Profile Picture Preview:</label><br>
-                <img id="profile-picture-preview" src="#" alt="Profile Picture Preview"
-                     style="max-width: 200px; max-height: 200px;"/>
-              </div>
-              <br>
-
-              <button type="submit" class="btn btn-primary btn-block">Submit</button>
-              <br>
-              <p>You have account?</p>
-<!--              <br>-->
-              <a href="/auth/user-login" style="width: 100%" class="btn btn-block btn-dark">LOGIN</a>
-            </form>
-          </div>
+                            <!-- Submit Button -->
+                            <div class="flex items-center justify-center">
+                                <button class="bg-black hover:bg-gray-700 w-full text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                                    Sign Up
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<script>
-  function displayImage(event) {
-    var input = event.target;
-    var reader = new FileReader();
-
-    reader.onload = function () {
-      var imgElement = document.getElementById('profile-picture-preview');
-      var div_preview = document.getElementById('profile-preview-div');
-      div_preview.style.display = "block";
-      imgElement.src = reader.result;
-
-      // const extension = input.files[0].toLowerCase();
-      // const mimeType = `image/${extension.substr(1)}`;
-      // var imageBase64 = document.getElementById('imageBase64');
-      // imageBase64.value = `data:${mimeType};base64,${reader.result}`;
-    };
-
-    reader.readAsDataURL(input.files[0]);
-  }
-</script>
+    <script>
+        function previewProfilePicture(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('profilePicturePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 
 <%- include ('../partials/footer.html') %>
