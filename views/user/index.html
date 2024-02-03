@@ -17,30 +17,31 @@
   </div>
 </header>
 
-<%- include ('../partials/alerts.html') %> 
+<%- include ('../partials/alerts.html') %>
 <!-- ACTIONS -->
 <section id="actions" class="py-4 mb-4 bg-light">
   <div class="container">
-    <div class="row">
-      <div class="col-md-4">
-        <a href="/books/all/all/1" class="btn btn-primary btn-block">
+    <div class="row flex-lg-row justify-content-center">
+
+      <div class="col-md-5">
+        <a href="/books/all/all/1" class="btn btn-warning btn-block">
           <i class="fa fa-plus"></i> Issue Book
         </a>
       </div>
 
 
-      <div class="col-md-4">
-        <a href="/books/return-renew" class="btn btn-info btn-block">
+      <div class="col-md-5">
+        <a href="/books/return-renew" class="btn btn-secondary btn-block">
           <i class="fa fa-retweet"></i> Renew/Return Book
         </a>
       </div>
-      
-      
-       <div class="col-md-4">
-        <a href="" class="btn btn-danger btn-block" data-toggle="modal" data-target="#payFineModal">
-          <i class="fa fa-credit-card"></i> Pay fines
-        </a>
-      </div>
+
+
+<!--       <div class="col-md-4">-->
+<!--        <a href="" class="btn btn-danger btn-block" data-toggle="modal" data-target="#payFineModal">-->
+<!--          <i class="fa fa-credit-card"></i> Pay fines-->
+<!--        </a>-->
+<!--      </div>-->
     </div>
   </div>
 </section>
@@ -63,7 +64,7 @@
         </div>
       </div>
       <div class="col-md-9">
-        
+
         <div class="card">
           <div class="card-header text-center">
             <h4>Recent Activities</h4>
@@ -87,7 +88,7 @@
                           <p>Issue :  <%=activity.time.issueDate.toDateString()%></p>
                           <p>Return :  <%=activity.time.returnDate.toDateString()%></p>
                         </td>
-                      </tr>  
+                      </tr>
                <%  } else if(activity.category == 'Return') { %>
                       <tr>
                           <td>You have <span class="table-text">returned</span> <%=activity.info.title%></td></td>
@@ -179,20 +180,20 @@
                         </tr>
                  <%  } %>
             <% }); %>
-              
+
             </tbody>
           </table>
-          
+
            <% if (pages > 0) { %>
         <nav class="ml-3 mb-2">
           <ul class="pagination offset-md-3">
-            
+
             <% if (current == 1) { %>
               <li class="page-item disabled"><a class="page-link">First</a></li>
             <% } else { %>
               <li class="page-item"><a href="/user/1" class="page-link">First</a></li>
             <% } %>
-            
+
             <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
                     <% if (i !== 1) { %>
                         <li class="page-item disabled"><a class="page-link">...</a></li>
@@ -215,9 +216,9 @@
           </ul>
         </nav>
      <% } %>
-          
-        
-          
+
+
+
         </div>
       </div>
     </div>

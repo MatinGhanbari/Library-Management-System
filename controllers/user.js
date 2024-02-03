@@ -177,9 +177,9 @@ exports.postUploadUserImage = async (req, res, next) => {
 };
 
 //user -> notification
-exports.getNotification = async (req, res, next) => {
-    res.render("user/notification");
-};
+// exports.getNotification = async (req, res, next) => {
+//     res.render("user/notification");
+// };
 
 //user -> issue a book
 exports.postIssueBook = async (req, res, next) => {
