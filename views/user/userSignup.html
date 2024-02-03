@@ -3,9 +3,9 @@
 
 </head>
 <body style="background: url('/images/AdminLogin-bg.png') no-repeat center center; background-size: cover; background-attachment: fixed;background-position: center;">
+<div class="flex flex-col min-h-screen bg-gray-100 bg-opacity-80 dark:bg-gray-800">
     <!-- ALERTS -->
     <%- include ('../partials/alerts.html') %>
-
     <section id="userSignUpForm" class="py-12">
         <div class="container mx-auto px-4">
             <div class="max-w-md mx-auto bg-white bg-opacity-60 rounded-lg shadow-md overflow-hidden md:max-w-lg">
@@ -32,7 +32,7 @@
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Username</label>
                                 <input class="flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" id="name" name="username" type="text" placeholder="Your Username" required>
                             </div>
-                              
+
                             <!-- Email Input -->
                             <div class="mb-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
@@ -80,6 +80,7 @@
             </div>
         </div>
     </section>
+    </div>
 
     <script>
         function previewProfilePicture(event) {

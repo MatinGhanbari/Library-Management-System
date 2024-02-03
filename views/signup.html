@@ -3,56 +3,63 @@
 
 </head>
 
+<!-- Background Image -->
 <body style="background: url('/images/AdminLogin-bg.png') no-repeat center center; background-size: cover; background-attachment: fixed;background-position: center;">
-    <!-- Background Image -->
-    <!-- <div class="min-h-screen bg-no-repeat bg-cover bg-center" style="background-image: url('/images/AdminLogin-bg.png');"> -->
-        <!-- ALERTS -->
-        <%- include ('./partials/alerts.html') %>
-
-        <section id="usersignUpForm" class="py-12">
-            <div class="container mx-auto px-4">
-                <div class="max-w-md mx-auto bg-white bg-opacity-60 rounded-lg shadow-md overflow-hidden md:max-w-lg">
-                    <div class="md:flex">
-                        <div class="w-full p-4">
-                            <div class="text-center mb-4">
-                                <h4 class="font-bold text-lg text-gray-700">Library Admin Sign Up</h4>
-                            </div>
-                            <form class="p-3" action="/auth/admin-signup" method="POST">
-                                <!-- Name Input -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Name</label>
-                                    <input class="flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" id="name" name="username" type="text" placeholder="Your Username" required>
-                                </div>
-                                
-                                <!-- Email Input -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
-                                    <input class="flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" id="email" name="email" type="email" placeholder="Your Email" required>
-                                </div>
-
-                                <!-- Password Input -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
-                                    <input class="flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" id="password" name="password" type="password" placeholder="******************" required>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="adminCode">Secret Code</label>
-                                    <input class="flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" id="password" name="adminCode" type="text" placeholder="Administrator Secret Code" required>
-                                </div>
-
-                                <!-- Submit Button -->
-                                <div class="flex items-center justify-center">
-                                    <button class="bg-black hover:bg-gray-700 w-full text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                                        Sign Up
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+<div class="flex flex-col min-h-screen bg-gray-100 bg-opacity-80 dark:bg-gray-800">
+    <!-- ALERTS -->
+    <%- include ('./partials/alerts.html') %>
+    <section id="usersignUpForm" class="py-12">
+    <div class="container mx-auto px-4">
+        <div class="max-w-md mx-auto bg-white bg-opacity-60 rounded-lg shadow-md overflow-hidden md:max-w-lg">
+            <div class="md:flex">
+                <div class="w-full p-4">
+                    <div class="text-center mb-4">
+                        <h4 class="font-bold text-lg text-gray-700">Library Admin Sign Up</h4>
                     </div>
+                    <form class="p-3" action="/auth/admin-signup" method="POST">
+                        <!-- Name Input -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Name</label>
+                            <input class="flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                   id="name" name="username" type="text" placeholder="Your Username" required>
+                        </div>
+
+                        <!-- Email Input -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
+                            <input class="flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                   id="email" name="email" type="email" placeholder="Your Email" required>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
+                            <input class="flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                   id="password" name="password" type="password" placeholder="******************"
+                                   required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="adminCode">Secret
+                                Code</label>
+                            <input class="flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                   id="password" name="adminCode" type="text" placeholder="Administrator Secret Code"
+                                   required>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="flex items-center justify-center">
+                            <button class="bg-black hover:bg-gray-700 w-full text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    type="submit">
+                                Sign Up
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </section>
+        </div>
     </div>
+</section>
+</div>
 
 <%- include ('./partials/footer.html') %>

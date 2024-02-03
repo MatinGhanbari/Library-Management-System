@@ -163,9 +163,4 @@ router.put(
   adminController.putUpdateAdminPassword
 );
 
-// //admin -> notifications
-// router.get("/admin/notifications", (req, res) => {
-//    res.send("This route is still under development. will be added in next version");
-// });
-
 module.exports = router;

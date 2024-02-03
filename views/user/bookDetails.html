@@ -59,10 +59,6 @@
 
             <% if(currentUser && comment.author.id.equals(currentUser._id)) {%>
 
-<!--            <button id="edit" class="btn btn-primary px-1 py-0">-->
-<!--              <i class="fa fa-pencil"></i>-->
-<!--            </button>-->
-
             <form class="d-inline" action="/books/details/<%=book._id%>/<%=comment._id%>?_method=DELETE" method="POST">
               <button class="btn btn-sm btn-danger px-1 py-0">
                 <i class="fa fa-trash"></i>

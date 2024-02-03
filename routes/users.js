@@ -41,13 +41,6 @@ router.put(
   userController.putUpdateUserProfile
 );
 
-//user -> notification
-// router.get(
-//   "/user/1/notification",
-//   middleware.isLoggedIn,
-//   userController.getNotification
-// );
-
 //user -> issue a book
 router.post(
   "/books/:book_id/issue/:user_id",

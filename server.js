@@ -70,7 +70,7 @@ app.use(
 
 app.use(flash());
 
-app.use(passport.initialize()); //must declared before passport.session()
+app.use(passport.initialize()); //must declare before passport.session()
 app.use(passport.session());
 
 passport.use(new localStrategy(User.authenticate()));
