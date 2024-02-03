@@ -89,10 +89,13 @@
             div_preview.style.display = "block";
             imgElement.src = reader.result;
 
-            const extension = input.files[0].toLowerCase();
-            const mimeType = `image/${extension.substr(1)}`;
-            var bookCover = document.getElementById('bookCover');
-            bookCover.value = `data:${mimeType};base64,${reader.result}`;
+            // const extension = input.files[0].toLowerCase();
+            // const mimeType = `image/${extension.substr(1)}`;
+            // var bookCover = document.getElementById('bookCover');
+            // bookCover.value = `data:${mimeType};base64,${reader.result}`;
+            bookCover.value = reader.result;
+
+            console.log(bookCover.value);
         };
 
         reader.readAsDataURL(input.files[0]);
